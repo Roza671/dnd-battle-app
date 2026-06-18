@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class Creatures {
 
-  public static Creature orc(String name) {
+  public static Creature warrior(String name) {
     var creatureStats = createStats(16, 10, 8);
 
     return new Creature(name, 26, 16, creatureStats);

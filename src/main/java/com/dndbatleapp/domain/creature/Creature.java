@@ -27,6 +27,7 @@ public class Creature {
 
     if ((currentHp + amount) > maxHp) {
       currentHp = maxHp;
+      return;
     }
 
     currentHp += amount;
@@ -56,4 +57,11 @@ public class Creature {
     return stats.modifier(DEXTERITY);
   }
 
+  public int maxHp() {
+    return maxHp;
+  }
+
+  public int currentHp() {
+    return currentHp;
+  }
 }
