@@ -1,22 +1,22 @@
 package com.dndbatleapp;
 
-import com.dndbatleapp.adapter.out.dice.RandomDiceRoller;
 import com.dndbatleapp.adapter.out.log.BattleLogFormatter;
 import com.dndbatleapp.adapter.out.log.ConsoleBattleReporter;
+import com.dndbatleapp.adapter.out.random.DefaultRandom;
 import com.dndbatleapp.application.battle.BattleAnalytics;
 import com.dndbatleapp.application.battle.BattleService;
 import com.dndbatleapp.domain.combat.ActionResolver;
 import com.dndbatleapp.domain.combat.BattleState;
 import com.dndbatleapp.domain.creature.bestiary.Creatures;
-import com.dndbatleapp.domain.dice.DiceRoller;
+import com.dndbatleapp.domain.shared.Random;
 
 import java.util.List;
 
 public class Main {
   public static void main(String[] args) {
-    DiceRoller roller = new RandomDiceRoller();
+    Random random = new DefaultRandom();
     var resolver = new ActionResolver();
-    var service = new BattleService(resolver, roller);
+    var service = new BattleService(resolver, random);
     var battleFormatter = new BattleLogFormatter();
     var analytics = new BattleAnalytics();
     ConsoleBattleReporter battleReporter = new ConsoleBattleReporter(battleFormatter);

@@ -4,8 +4,8 @@ import com.dndbatleapp.domain.combat.Action;
 import com.dndbatleapp.domain.combat.BattleState;
 import com.dndbatleapp.domain.creature.Creature;
 import com.dndbatleapp.domain.dice.DicePool;
-import com.dndbatleapp.domain.dice.DiceRoller;
 import com.dndbatleapp.domain.dice.DiceType;
+import com.dndbatleapp.domain.shared.Random;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -14,7 +14,7 @@ public class ClericStrategy implements ActionStrategy {
   private static final int HEAL_MANA_COST = 5;
 
   @Override
-  public Optional<Action> decide(Creature self, BattleState state, DiceRoller roller) {
+  public Optional<Action> decide(Creature self, BattleState state, Random random) {
     return state.alliesOf(self).stream()
         .filter(Creature::isAlive)
         .min(Comparator.comparingInt(Creature::currentHp))

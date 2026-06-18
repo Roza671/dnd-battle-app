@@ -5,10 +5,10 @@ import com.dndbatleapp.domain.combat.ActionResolver;
 import com.dndbatleapp.domain.combat.ActionResult;
 import com.dndbatleapp.domain.creature.bestiary.Creatures;
 import com.dndbatleapp.domain.dice.DicePool;
-import com.dndbatleapp.domain.dice.DiceRoller;
 import com.dndbatleapp.domain.dice.DiceType;
 import com.dndbatleapp.domain.exception.DeadCreatureException;
 import com.dndbatleapp.domain.exception.NotEnoughManaException;
+import com.dndbatleapp.domain.shared.Random;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayDeque;
@@ -20,7 +20,7 @@ class ActionResolverTest {
 
   private final ActionResolver resolver = new ActionResolver();
 
-  private static DiceRoller fixed(int... values) {
+  private static Random fixed(int... values) {
     Queue<Integer> queue = new ArrayDeque<>();
     for (int v : values) {
       queue.add(v);
@@ -33,7 +33,7 @@ class ActionResolverTest {
     };
   }
 
-  private static DiceRoller always(int value) {
+  private static Random always(int value) {
     return sides -> value;
   }
 

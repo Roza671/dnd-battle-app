@@ -2,29 +2,29 @@ package com.dndbatleapp.domain.combat;
 
 import com.dndbatleapp.domain.creature.Creature;
 import com.dndbatleapp.domain.dice.DicePool;
-import com.dndbatleapp.domain.dice.DiceRoller;
 import com.dndbatleapp.domain.dice.RollResult;
 import com.dndbatleapp.domain.exception.DeadCreatureException;
 import com.dndbatleapp.domain.exception.NotEnoughManaException;
+import com.dndbatleapp.domain.shared.Random;
 
 public class ActionResolver {
-  public ActionResult resolve(Action action, DiceRoller roller) {
+  public ActionResult resolve(Action action, Random random) {
     return switch (action) {
-      case Action.Attack(var attacker, var target) -> resolveAttack(attacker, target, roller);
-      case Action.Heal heal -> resolveHeal(heal, roller);
-      case Action.CastDamageSpell c -> resolveSpell(c, roller);
+      case Action.Attack(var attacker, var target) -> resolveAttack(attacker, target, random);
+      case Action.Heal heal -> resolveHeal(heal, random);
+      case Action.CastDamageSpell c -> resolveSpell(c, random);
       case Action.Defend(var self) -> resolveDefend(self);
       case Action.Skip(var self) -> resolveSkip(self);
     };
   }
 
-  private ActionResult resolveAttack(Creature attacker, Creature target, DiceRoller roller) {
+  private ActionResult resolveAttack(Creature attacker, Creature target, Random random) {
     if (!target.isAlive()) {
       throw new DeadCreatureException(
           "Cannot attack a dead creature: " + target.name());
     }
 
-    int attackRoll = roller.roll(20);
+    int attackRoll = random.next(20);
 
     if (attackRoll == 1) {
       return new ActionResult.AttackMiss(attacker, target);
@@ -36,16 +36,16 @@ public class ActionResolver {
       return new ActionResult.AttackMiss(attacker, target);
     }
 
-    int damage = rollDamage(attacker, roller, isCritical);
+    int damage = rollDamage(attacker, random, isCritical);
 
     target.takeDamage(damage);
 
     return new ActionResult.AttackHit(attacker, target, damage, isCritical);
   }
 
-  private int rollDamage(Creature attacker, DiceRoller roller, boolean critical) {
+  private int rollDamage(Creature attacker, Random random, boolean critical) {
     DicePool weaponDamage = attacker.damagePool();
-    RollResult result = weaponDamage.roll(roller);
+    RollResult result = weaponDamage.roll(random);
     int damage = result.total();
 
     if (critical) {
@@ -56,42 +56,42 @@ public class ActionResolver {
     return Math.max(0, damage);
   }
 
-  private ActionResult resolveSpell(Action.CastDamageSpell c, DiceRoller roller) {
-    if (!c.target().isAlive()) {
+  private ActionResult resolveSpell(Action.CastDamageSpell spell, Random random) {
+    if (!spell.target().isAlive()) {
       throw new DeadCreatureException(
-          "Cannot attack a dead creature: " + c.target().name());
+          "Cannot attack a dead creature: " + spell.target().name());
     }
 
-    if (c.manaCost() > c.caster().currentMana()) {
+    if (spell.manaCost() > spell.caster().currentMana()) {
       throw new NotEnoughManaException(
-          String.format("Dont enough mana for the spell. Required %d but have %d", c.manaCost(), c.caster().currentMana())
+          String.format("Dont enough mana for the spell. Required %d but have %d", spell.manaCost(), spell.caster().currentMana())
       );
     }
 
-    c.caster().takeMana(c.manaCost());
+    spell.caster().takeMana(spell.manaCost());
 
-    int attackRoll = roller.roll(20);
+    int attackRoll = random.next(20);
 
     if (attackRoll == 1) {
-      return new ActionResult.SpellMiss(c.caster(), c.target());
+      return new ActionResult.SpellMiss(spell.caster(), spell.target());
     }
 
 
     boolean isCritical = attackRoll == 20;
 
-    if (!isCritical && (attackRoll + c.caster().spellBonus()) < c.target().armorClass()) {
-      return new ActionResult.SpellMiss(c.caster(), c.target());
+    if (!isCritical && (attackRoll + spell.caster().spellBonus()) < spell.target().armorClass()) {
+      return new ActionResult.SpellMiss(spell.caster(), spell.target());
     }
 
-    int damage = rollSpellDamage(c, roller, isCritical);
-    c.target().takeDamage(damage);
+    int damage = rollSpellDamage(spell, random, isCritical);
+    spell.target().takeDamage(damage);
 
-    return new ActionResult.SpellCast(c.caster(), c.target(), damage, isCritical);
+    return new ActionResult.SpellCast(spell.caster(), spell.target(), damage, isCritical);
   }
 
-  private int rollSpellDamage(Action.CastDamageSpell castSpell, DiceRoller roller, boolean critical) {
+  private int rollSpellDamage(Action.CastDamageSpell castSpell, Random random, boolean critical) {
     DicePool spellDamage = castSpell.damage();
-    RollResult result = spellDamage.roll(roller);
+    RollResult result = spellDamage.roll(random);
     int damage = result.total();
 
     if (critical) {
@@ -102,12 +102,12 @@ public class ActionResolver {
     return Math.max(0, damage);
   }
 
-  private ActionResult resolveHeal(Action.Heal healSpell, DiceRoller roller) {
+  private ActionResult resolveHeal(Action.Heal healSpell, Random random) {
     if (!healSpell.target().isAlive()) {
       throw new DeadCreatureException("Cannot heal a dead creature: " + healSpell.target().name());
     }
 
-    int amount = healSpell.pool().roll(roller).total();
+    int amount = healSpell.pool().roll(random).total();
     healSpell.target().heal(amount);
     healSpell.healer().takeMana(healSpell.manaCost());
 

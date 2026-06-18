@@ -4,7 +4,7 @@ import com.dndbatleapp.domain.combat.ActionResolver;
 import com.dndbatleapp.domain.combat.ActionResult;
 import com.dndbatleapp.domain.combat.BattleState;
 import com.dndbatleapp.domain.creature.Creature;
-import com.dndbatleapp.domain.dice.DiceRoller;
+import com.dndbatleapp.domain.shared.Random;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,16 +15,16 @@ public final class BattleService {
   private static final int MAX_ROUNDS = 50;
 
   private final ActionResolver resolver;
-  private final DiceRoller roller;
+  private final Random random;
 
-  public BattleService(ActionResolver resolver, DiceRoller roller) {
+  public BattleService(ActionResolver resolver, Random random) {
     this.resolver = resolver;
-    this.roller = roller;
+    this.random = random;
   }
 
   public BattleOutcome run(BattleState state) {
     List<ActionResult> log = new ArrayList<>();
-    List<Creature> order = rollInitiative(state, roller);
+    List<Creature> order = rollInitiative(state, random);
 
     int round = 0;
 
@@ -41,8 +41,8 @@ public final class BattleService {
           continue;
         }
 
-        c.strategy().decide(c, state, roller)
-            .map(action -> resolver.resolve(action, roller))
+        c.strategy().decide(c, state, random)
+            .map(action -> resolver.resolve(action, random))
             .ifPresent(log::add);
 
         if (state.isOver()) {
@@ -54,10 +54,9 @@ public final class BattleService {
     return new BattleOutcome(state.winner().orElse(null), round, log);
   }
 
-  private List<Creature> rollInitiative(BattleState state, DiceRoller roller) {
+  private List<Creature> rollInitiative(BattleState state, Random random) {
     return Stream.concat(state.aliveHeroes().stream(), state.aliveEnemies().stream())
-        .sorted(Comparator.comparingInt(
-            (Creature c) -> roller.roll(20) + c.initiativeBonus()).reversed())
+        .sorted(Comparator.comparingInt((Creature c) -> random.next(20) + c.initiativeBonus()).reversed())
         .toList();
   }
 }
