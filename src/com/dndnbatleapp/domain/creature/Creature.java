@@ -1,6 +1,5 @@
 package com.dndnbatleapp.domain.creature;
 
-import com.dndnbatleapp.domain.attribute.Attribute;
 import com.dndnbatleapp.domain.exception.DeadCreatureException;
 
 import static com.dndnbatleapp.domain.attribute.Attribute.STRENGTH;
