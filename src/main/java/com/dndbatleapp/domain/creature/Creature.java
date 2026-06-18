@@ -4,9 +4,11 @@ import com.dndbatleapp.domain.combat.effect.Effect;
 import com.dndbatleapp.domain.combat.effect.EffectType;
 import com.dndbatleapp.domain.combat.strategy.ActionStrategy;
 import com.dndbatleapp.domain.dice.DicePool;
+import com.dndbatleapp.domain.item.Item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.dndbatleapp.domain.attribute.Attribute.*;
 
@@ -18,6 +20,8 @@ public class Creature {
   private final ActionStrategy strategy;
   private final List<Effect> effects = new ArrayList<>();
   private int currentHp, currentMana;
+  private Item.Weapon equippedWeapon;
+  private Item.Armor equippedArmor;
 
   public Creature(String name, int maxHp, int maxMana, int armorClass, CreatureStats stats, DicePool damagePool, ActionStrategy strategy) {
     this.name = name;
@@ -126,7 +130,9 @@ public class Creature {
   }
 
   public int armorClass() {
-    return armorClass;
+    return armorClass + Optional.ofNullable(equippedArmor)
+        .map(Item.Armor::armorBonus)
+        .orElse(0);
   }
 
   public String name() {
@@ -134,7 +140,7 @@ public class Creature {
   }
 
   public DicePool damagePool() {
-    return damagePool;
+    return equippedWeapon != null ? equippedWeapon.damage() : damagePool;
   }
 
   public ActionStrategy strategy() {
