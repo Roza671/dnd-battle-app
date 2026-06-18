@@ -41,7 +41,7 @@ public final class BattleService {
           continue;
         }
 
-        c.strategy().decide(c, state, random)
+        c.strategy().decide(c, state)
             .map(action -> resolver.resolve(action, random))
             .ifPresent(log::add);
 

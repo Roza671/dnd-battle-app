@@ -9,8 +9,15 @@ import java.util.List;
 import java.util.Optional;
 
 public class MonsterStrategy implements ActionStrategy {
+
+  private final Random random;
+
+  public MonsterStrategy(Random random) {
+    this.random = random;
+  }
+
   @Override
-  public Optional<Action> decide(Creature self, BattleState state, Random random) {
+  public Optional<Action> decide(Creature self, BattleState state) {
     List<Creature> aliveEnemies = state.enemiesOf(self).stream()
         .filter(Creature::isAlive)
         .toList();

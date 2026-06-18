@@ -21,9 +21,23 @@ public class Main {
     var analytics = new BattleAnalytics();
     ConsoleBattleReporter battleReporter = new ConsoleBattleReporter(battleFormatter);
 
+    var heroes = List.of(
+        Creatures.warrior("Guts"),
+        Creatures.mage("Gandalf the Grey"),
+        Creatures.cleric("Sein")
+    );
 
-    var heroes = List.of(Creatures.warrior("GUTS BERSERK"), Creatures.mage("Gandalf the Grey"));
-    var enemies = List.of(Creatures.goblin(), Creatures.goblin());
+    var enemies = List.of(
+        Creatures.goblin(random),
+        Creatures.goblin(random),
+        Creatures.goblin(random),
+        Creatures.goblin(random),
+        Creatures.goblin(random),
+        Creatures.goblin(random),
+        Creatures.goblin(random),
+        Creatures.goblin(random)
+    );
+
     var state = new BattleState(heroes, enemies);
 
     var outcome = service.run(state);

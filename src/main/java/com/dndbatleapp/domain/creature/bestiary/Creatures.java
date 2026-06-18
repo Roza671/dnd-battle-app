@@ -9,6 +9,7 @@ import com.dndbatleapp.domain.creature.Creature;
 import com.dndbatleapp.domain.creature.CreatureStats;
 import com.dndbatleapp.domain.dice.DicePool;
 import com.dndbatleapp.domain.dice.DiceType;
+import com.dndbatleapp.domain.shared.Random;
 
 import java.util.Map;
 
@@ -35,18 +36,18 @@ public class Creatures {
     return new Creature(name, 13, 15, 10, creatureStats, damagePool, new ClericStrategy());
   }
 
-  public static Creature goblin() {
+  public static Creature goblin(Random random) {
     var creatureStats = createStats(8, 14, 6);
     var damagePool = new DicePool(1, DiceType.D4, 0);
 
-    return new Creature("Green Goblin", 16, 0, 12, creatureStats, damagePool, new MonsterStrategy());
+    return new Creature("Green Goblin", 16, 0, 12, creatureStats, damagePool, new MonsterStrategy(random));
   }
 
-  public static Creature dragon() {
+  public static Creature dragon(Random random) {
     var creatureStats = createStats(25, 14, 20);
     var damagePool = new DicePool(4, DiceType.D20, 0);
 
-    return new Creature("Draco", 120, 1000, 12, creatureStats, damagePool, new MonsterStrategy());
+    return new Creature("Smaug the Dragon", 120, 1000, 12, creatureStats, damagePool, new MonsterStrategy(random));
   }
 
   private static CreatureStats createStats(int strength, int dexterity, int intelligence) {
