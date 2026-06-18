@@ -1,4 +1,4 @@
-package com.dndnbatleapp.domain.exception;
+package com.dndbatleapp.domain.exception;
 
 public class DicePoolCountException extends RuntimeException {
   public DicePoolCountException() {

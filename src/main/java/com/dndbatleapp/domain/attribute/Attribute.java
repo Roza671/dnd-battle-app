@@ -1,4 +1,4 @@
-package com.dndnbatleapp.domain.attribute;
+package com.dndbatleapp.domain.attribute;
 
 public enum Attribute {
   STRENGTH, DEXTERITY, INTELLIGENCE,

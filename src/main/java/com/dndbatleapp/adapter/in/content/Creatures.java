@@ -1,8 +1,8 @@
-package com.dndnbatleapp.adapter.in.content;
+package com.dndbatleapp.adapter.in.content;
 
-import com.dndnbatleapp.domain.attribute.Attribute;
-import com.dndnbatleapp.domain.creature.Creature;
-import com.dndnbatleapp.domain.creature.CreatureStats;
+import com.dndbatleapp.domain.attribute.Attribute;
+import com.dndbatleapp.domain.creature.Creature;
+import com.dndbatleapp.domain.creature.CreatureStats;
 
 import java.util.Map;
 

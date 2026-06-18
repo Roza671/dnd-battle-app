@@ -1,8 +1,8 @@
-package com.dndnbatleapp.domain.creature;
+package com.dndbatleapp.domain.creature;
 
-import com.dndnbatleapp.domain.exception.DeadCreatureException;
+import com.dndbatleapp.domain.exception.DeadCreatureException;
 
-import static com.dndnbatleapp.domain.attribute.Attribute.STRENGTH;
+import static com.dndbatleapp.domain.attribute.Attribute.STRENGTH;
 
 public class Creature {
   private final String name;

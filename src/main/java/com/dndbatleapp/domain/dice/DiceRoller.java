@@ -1,4 +1,4 @@
-package com.dndnbatleapp.domain.dice;
+package com.dndbatleapp.domain.dice;
 
 @FunctionalInterface
 public interface DiceRoller {

@@ -1,6 +1,6 @@
-package com.dndnbatleapp.adapter.out.dice;
+package com.dndbatleapp.adapter.out.dice;
 
-import com.dndnbatleapp.domain.dice.DiceRoller;
+import com.dndbatleapp.domain.dice.DiceRoller;
 
 import java.util.random.RandomGenerator;
 

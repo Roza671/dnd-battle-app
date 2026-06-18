@@ -1,6 +1,6 @@
-package com.dndnbatleapp.domain.dice;
+package com.dndbatleapp.domain.dice;
 
-import com.dndnbatleapp.domain.exception.DicePoolCountException;
+import com.dndbatleapp.domain.exception.DicePoolCountException;
 
 public record DicePool(int count, DiceType type, int modifier) {
   public DicePool {
