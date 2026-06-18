@@ -7,7 +7,7 @@ public sealed interface Action permits Action.Attack, Action.CastDamageSpell, Ac
   record Skip(Creature self) implements Action {
   }
 
-  record Heal(Creature healer, Creature target, DicePool amount) implements Action {
+  record Heal(Creature healer, Creature target, DicePool pool, int manaCost) implements Action {
   }
 
   record Defend(Creature self) implements Action {

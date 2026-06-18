@@ -8,11 +8,10 @@ import com.dndbatleapp.domain.exception.DeadCreatureException;
 import com.dndbatleapp.domain.exception.NotEnoughManaException;
 
 public class ActionResolver {
-
   public ActionResult resolve(Action action, DiceRoller roller) {
     return switch (action) {
       case Action.Attack(var attacker, var target) -> resolveAttack(attacker, target, roller);
-      case Action.Heal(var healer, var target, var pool) -> resolveHeal(healer, target, pool, roller);
+      case Action.Heal heal -> resolveHeal(heal, roller);
       case Action.CastDamageSpell c -> resolveSpell(c, roller);
       case Action.Defend(var self) -> resolveDefend(self);
       case Action.Skip(var self) -> resolveSkip(self);
@@ -90,8 +89,8 @@ public class ActionResolver {
     return new ActionResult.SpellCast(c.caster(), c.target(), damage, isCritical);
   }
 
-  private int rollSpellDamage(Action.CastDamageSpell c, DiceRoller roller, boolean critical) {
-    DicePool spellDamage = c.damage();
+  private int rollSpellDamage(Action.CastDamageSpell castSpell, DiceRoller roller, boolean critical) {
+    DicePool spellDamage = castSpell.damage();
     RollResult result = spellDamage.roll(roller);
     int damage = result.total();
 
@@ -103,15 +102,16 @@ public class ActionResolver {
     return Math.max(0, damage);
   }
 
-  private ActionResult resolveHeal(Creature healer, Creature target, DicePool pool, DiceRoller roller) {
-    if (!target.isAlive()) {
-      throw new DeadCreatureException("Cannot heal a dead creature: " + target.name());
+  private ActionResult resolveHeal(Action.Heal healSpell, DiceRoller roller) {
+    if (!healSpell.target().isAlive()) {
+      throw new DeadCreatureException("Cannot heal a dead creature: " + healSpell.target().name());
     }
 
-    int amount = pool.roll(roller).total();
-    target.heal(amount);
+    int amount = healSpell.pool().roll(roller).total();
+    healSpell.target().heal(amount);
+    healSpell.healer().takeMana(healSpell.manaCost());
 
-    return new ActionResult.Healed(healer, target, amount);
+    return new ActionResult.Healed(healSpell.healer(), healSpell.target(), amount);
   }
 
   private ActionResult resolveDefend(Creature self) {

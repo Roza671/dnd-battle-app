@@ -125,9 +125,10 @@ class ActionResolverTest {
     var target = Creatures.warrior("Hero");
     target.takeDamage(10);
     int before = target.currentHp();
+    int manaCost = 5;
 
     var pool = new DicePool(2, DiceType.D6, 0);
-    var result = resolver.resolve(new Action.Heal(healer, target, pool), fixed(3, 2));
+    var result = resolver.resolve(new Action.Heal(healer, target, pool, manaCost), fixed(3, 2));
 
     assertInstanceOf(ActionResult.Healed.class, result);
     assertEquals(5, ((ActionResult.Healed) result).amount());
@@ -139,10 +140,11 @@ class ActionResolverTest {
     var healer = Creatures.mage("Cleric");
     var target = Creatures.goblin();
     target.takeDamage(9999);
+    int manaCost = 5;
 
     var pool = new DicePool(1, DiceType.D6, 0);
     assertThrows(DeadCreatureException.class,
-        () -> resolver.resolve(new Action.Heal(healer, target, pool), always(4)));
+        () -> resolver.resolve(new Action.Heal(healer, target, pool, manaCost), always(4)));
   }
 
   // ---- DEFEND / SKIP ----------------------------------------------------

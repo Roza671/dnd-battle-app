@@ -18,10 +18,17 @@ public class Creatures {
   }
 
   public static Creature mage(String name) {
-    var creatureStats = createStats(8, 8, 16);
+    var creatureStats = createStats(8, 8, 18);
     var damagePool = new DicePool(1, DiceType.D10, 0);
 
-    return new Creature(name, 11, 20, 10, creatureStats, damagePool);
+    return new Creature(name, 11, 15, 10, creatureStats, damagePool);
+  }
+
+  public static Creature cleric(String name) {
+    var creatureStats = createStats(8, 8, 16);
+    var damagePool = new DicePool(1, DiceType.D6, 0);
+
+    return new Creature(name, 13, 15, 10, creatureStats, damagePool);
   }
 
   public static Creature goblin() {
@@ -29,13 +36,6 @@ public class Creatures {
     var damagePool = new DicePool(1, DiceType.D4, 0);
 
     return new Creature("Гоблыч", 16, 0, 12, creatureStats, damagePool);
-  }
-
-  public static Creature skeleton() {
-    var creatureStats = createStats(12, 12, 6);
-    var damagePool = new DicePool(1, DiceType.D8, 0);
-
-    return new Creature("Костян", 14, 0, 12, creatureStats, damagePool);
   }
 
   public static Creature dragon() {
