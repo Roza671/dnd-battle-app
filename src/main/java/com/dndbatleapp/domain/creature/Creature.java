@@ -2,6 +2,7 @@ package com.dndbatleapp.domain.creature;
 
 import com.dndbatleapp.domain.combat.effect.Effect;
 import com.dndbatleapp.domain.combat.effect.EffectType;
+import com.dndbatleapp.domain.combat.strategy.ActionStrategy;
 import com.dndbatleapp.domain.dice.DicePool;
 
 import java.util.ArrayList;
@@ -14,10 +15,11 @@ public class Creature {
   private final int maxHp, maxMana, armorClass;
   private final CreatureStats stats;
   private final DicePool damagePool;
+  private final ActionStrategy strategy;
   private final List<Effect> effects = new ArrayList<>();
   private int currentHp, currentMana;
 
-  public Creature(String name, int maxHp, int maxMana, int armorClass, CreatureStats stats, DicePool damagePool) {
+  public Creature(String name, int maxHp, int maxMana, int armorClass, CreatureStats stats, DicePool damagePool, ActionStrategy strategy) {
     this.name = name;
     this.maxHp = maxHp;
     this.currentHp = maxHp;
@@ -26,6 +28,7 @@ public class Creature {
     this.armorClass = armorClass;
     this.stats = stats;
     this.damagePool = damagePool;
+    this.strategy = strategy;
   }
 
   public void addEffect(Effect effect) {
@@ -127,5 +130,9 @@ public class Creature {
 
   public DicePool damagePool() {
     return damagePool;
+  }
+
+  public ActionStrategy strategy() {
+    return strategy;
   }
 }
