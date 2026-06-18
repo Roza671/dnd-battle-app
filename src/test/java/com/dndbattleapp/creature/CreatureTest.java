@@ -17,7 +17,7 @@ public class CreatureTest {
 
   @Test
   void healDoesNotExceedMaxHp() {
-    var hero = Creatures.warrior("ГАТЦС");
+    var hero = Creatures.warrior("GUTSS");
     hero.takeDamage(5);
     hero.heal(9999);
     assertEquals(hero.maxHp(), hero.currentHp());
@@ -25,7 +25,7 @@ public class CreatureTest {
 
   @Test
   void takeNegativeDamageIsRejected() {
-    var hero = Creatures.warrior("ГАТЦС");
+    var hero = Creatures.warrior("GUTSS");
     assertThrows(IllegalArgumentException.class, () -> hero.takeDamage(-10));
   }
 }
