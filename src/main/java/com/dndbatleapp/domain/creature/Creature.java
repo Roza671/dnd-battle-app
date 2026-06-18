@@ -2,6 +2,7 @@ package com.dndbatleapp.domain.creature;
 
 import com.dndbatleapp.domain.exception.DeadCreatureException;
 
+import static com.dndbatleapp.domain.attribute.Attribute.DEXTERITY;
 import static com.dndbatleapp.domain.attribute.Attribute.STRENGTH;
 
 public class Creature {
@@ -48,9 +49,11 @@ public class Creature {
   }
 
   public Integer attackBonus() {
-    int strength = stats.get().getOrDefault(STRENGTH, 10);
+    return stats.modifier(STRENGTH);
+  }
 
-    return Math.floorDiv(strength - 10, 2);
+  public int initiativeBonus() {
+    return stats.modifier(DEXTERITY);
   }
 
 }
