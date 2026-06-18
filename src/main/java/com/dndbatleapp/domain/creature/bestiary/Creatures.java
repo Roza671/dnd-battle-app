@@ -1,4 +1,4 @@
-package com.dndbatleapp.adapter.in.content;
+package com.dndbatleapp.domain.creature.bestiary;
 
 import com.dndbatleapp.domain.attribute.Attribute;
 import com.dndbatleapp.domain.creature.Creature;
@@ -42,7 +42,7 @@ public class Creatures {
     var creatureStats = createStats(25, 14, 20);
     var damagePool = new DicePool(4, DiceType.D20, 0);
 
-    return new Creature("Дракоша", 1200, 1000, 12, creatureStats, damagePool);
+    return new Creature("Дракоша", 120, 1000, 12, creatureStats, damagePool);
   }
 
   private static CreatureStats createStats(int strength, int dexterity, int intelligence) {

@@ -15,7 +15,7 @@ public class ActionResolver {
       case Heal(var healer, var target, var pool) -> resolveHeal(healer, target, pool, roller);
       case CastDamageSpell c -> resolveSpell(c, roller);
       case Defend(var self) -> resolveDefend(self);
-      case Skip(var self) -> new Skipped(self);
+      case Skip(var self) -> resolveSkip(self);
     };
   }
 
@@ -31,17 +31,17 @@ public class ActionResolver {
       return new AttackMiss(attacker, target);
     }
 
-    boolean critical = attackRoll == 20;
+    boolean isCritical = attackRoll == 20;
 
-    if (!critical && (attackRoll + attacker.attackBonus()) < target.armorClass()) {
+    if (!isCritical && (attackRoll + attacker.attackBonus()) < target.armorClass()) {
       return new AttackMiss(attacker, target);
     }
 
-    int damage = rollDamage(attacker, roller, critical);
+    int damage = rollDamage(attacker, roller, isCritical);
 
     target.takeDamage(damage);
 
-    return new AttackHit(attacker, target, damage, critical);
+    return new AttackHit(attacker, target, damage, isCritical);
   }
 
   private int rollDamage(Creature attacker, DiceRoller roller, boolean critical) {
@@ -69,22 +69,25 @@ public class ActionResolver {
       );
     }
 
+    c.caster().takeMana(c.manaCost());
+
     int attackRoll = roller.roll(20);
 
     if (attackRoll == 1) {
-      return new AttackMiss(c.caster(), c.target());
+      return new SpellMiss(c.caster(), c.target());
     }
 
-    boolean critical = attackRoll == 20;
 
-    if (!critical && (attackRoll + c.caster().spellBonus()) < c.target().armorClass()) {
-      return new AttackMiss(c.caster(), c.target());
+    boolean isCritical = attackRoll == 20;
+
+    if (!isCritical && (attackRoll + c.caster().spellBonus()) < c.target().armorClass()) {
+      return new SpellMiss(c.caster(), c.target());
     }
 
-    int damage = rollSpellDamage(c, roller, critical);
+    int damage = rollSpellDamage(c, roller, isCritical);
     c.target().takeDamage(damage);
 
-    return new AttackHit(c.caster(), c.target(), damage, critical);
+    return new SpellCast(c.caster(), c.target(), damage, isCritical);
   }
 
   private int rollSpellDamage(CastDamageSpell c, DiceRoller roller, boolean critical) {

@@ -1,6 +1,6 @@
 package com.dndbattleapp.creature;
 
-import com.dndbatleapp.adapter.in.content.Creatures;
+import com.dndbatleapp.domain.creature.bestiary.Creatures;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

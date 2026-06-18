@@ -1,7 +1,6 @@
 package com.dndbatleapp.domain.creature;
 
 import com.dndbatleapp.domain.dice.DicePool;
-import com.dndbatleapp.domain.exception.DeadCreatureException;
 
 import static com.dndbatleapp.domain.attribute.Attribute.*;
 
@@ -27,10 +26,6 @@ public class Creature {
   }
 
   public void heal(int amount) {
-    if (! isAlive()) {
-      throw new DeadCreatureException("Cannot heal dead creature.");
-    }
-
     if ((currentHp + amount) > maxHp) {
       currentHp = maxHp;
       return;
@@ -67,11 +62,11 @@ public class Creature {
     return currentHp > 0;
   }
 
-  public Integer attackBonus() {
+  public int attackBonus() {
     return stats.modifier(STRENGTH);
   }
 
-  public Integer spellBonus() {
+  public int spellBonus() {
     return stats.modifier(INTELLIGENCE);
   }
 

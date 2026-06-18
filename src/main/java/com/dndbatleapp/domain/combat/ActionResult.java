@@ -1,4 +1,27 @@
 package com.dndbatleapp.domain.combat;
 
-public sealed interface ActionResult permits AttackHit, AttackMiss, Defended, Healed, Skipped, SpellCast {
+import com.dndbatleapp.domain.creature.Creature;
+
+public sealed interface ActionResult permits AttackHit, AttackMiss, Defended, Healed, Skipped, SpellCast, SpellMiss {
+}
+
+record SpellMiss(Creature attacker, Creature target) implements ActionResult {
+}
+
+record SpellCast(Creature caster, Creature target, int damage, boolean isCritical) implements ActionResult {
+}
+
+record Skipped(Creature self) implements ActionResult {
+}
+
+record Healed(Creature healer, Creature target, int amount) implements ActionResult {
+}
+
+record Defended(Creature self) implements ActionResult {
+}
+
+record AttackMiss(Creature attacker, Creature target) implements ActionResult {
+}
+
+record AttackHit(Creature attacker, Creature target, int damage, boolean critical) implements ActionResult {
 }

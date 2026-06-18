@@ -9,10 +9,6 @@ public record CreatureStats(Map<Attribute, Integer> attributes) {
     attributes = Map.copyOf(attributes);
   }
 
-  public Map<Attribute, Integer> get() {
-    return Map.copyOf(attributes);
-  }
-
   public int modifier(Attribute attribute) {
     Integer value = attributes.get(attribute);
 
