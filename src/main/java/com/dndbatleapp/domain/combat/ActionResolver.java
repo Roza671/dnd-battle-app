@@ -11,11 +11,11 @@ public class ActionResolver {
 
   public ActionResult resolve(Action action, DiceRoller roller) {
     return switch (action) {
-      case Attack(var attacker, var target) -> resolveAttack(attacker, target, roller);
-      case Heal(var healer, var target, var pool) -> resolveHeal(healer, target, pool, roller);
-      case CastDamageSpell c -> resolveSpell(c, roller);
-      case Defend(var self) -> resolveDefend(self);
-      case Skip(var self) -> resolveSkip(self);
+      case Action.Attack(var attacker, var target) -> resolveAttack(attacker, target, roller);
+      case Action.Heal(var healer, var target, var pool) -> resolveHeal(healer, target, pool, roller);
+      case Action.CastDamageSpell c -> resolveSpell(c, roller);
+      case Action.Defend(var self) -> resolveDefend(self);
+      case Action.Skip(var self) -> resolveSkip(self);
     };
   }
 
@@ -28,20 +28,20 @@ public class ActionResolver {
     int attackRoll = roller.roll(20);
 
     if (attackRoll == 1) {
-      return new AttackMiss(attacker, target);
+      return new ActionResult.AttackMiss(attacker, target);
     }
 
     boolean isCritical = attackRoll == 20;
 
     if (!isCritical && (attackRoll + attacker.attackBonus()) < target.armorClass()) {
-      return new AttackMiss(attacker, target);
+      return new ActionResult.AttackMiss(attacker, target);
     }
 
     int damage = rollDamage(attacker, roller, isCritical);
 
     target.takeDamage(damage);
 
-    return new AttackHit(attacker, target, damage, isCritical);
+    return new ActionResult.AttackHit(attacker, target, damage, isCritical);
   }
 
   private int rollDamage(Creature attacker, DiceRoller roller, boolean critical) {
@@ -57,7 +57,7 @@ public class ActionResolver {
     return Math.max(0, damage);
   }
 
-  private ActionResult resolveSpell(CastDamageSpell c, DiceRoller roller) {
+  private ActionResult resolveSpell(Action.CastDamageSpell c, DiceRoller roller) {
     if (!c.target().isAlive()) {
       throw new DeadCreatureException(
           "Cannot attack a dead creature: " + c.target().name());
@@ -74,23 +74,23 @@ public class ActionResolver {
     int attackRoll = roller.roll(20);
 
     if (attackRoll == 1) {
-      return new SpellMiss(c.caster(), c.target());
+      return new ActionResult.SpellMiss(c.caster(), c.target());
     }
 
 
     boolean isCritical = attackRoll == 20;
 
     if (!isCritical && (attackRoll + c.caster().spellBonus()) < c.target().armorClass()) {
-      return new SpellMiss(c.caster(), c.target());
+      return new ActionResult.SpellMiss(c.caster(), c.target());
     }
 
     int damage = rollSpellDamage(c, roller, isCritical);
     c.target().takeDamage(damage);
 
-    return new SpellCast(c.caster(), c.target(), damage, isCritical);
+    return new ActionResult.SpellCast(c.caster(), c.target(), damage, isCritical);
   }
 
-  private int rollSpellDamage(CastDamageSpell c, DiceRoller roller, boolean critical) {
+  private int rollSpellDamage(Action.CastDamageSpell c, DiceRoller roller, boolean critical) {
     DicePool spellDamage = c.damage();
     RollResult result = spellDamage.roll(roller);
     int damage = result.total();
@@ -111,15 +111,15 @@ public class ActionResolver {
     int amount = pool.roll(roller).total();
     target.heal(amount);
 
-    return new Healed(healer, target, amount);
+    return new ActionResult.Healed(healer, target, amount);
   }
 
   private ActionResult resolveDefend(Creature self) {
-    return new Defended(self);
+    return new ActionResult.Defended(self);
   }
 
   private ActionResult resolveSkip(Creature self) {
-    return new Skipped(self);
+    return new ActionResult.Skipped(self);
   }
 
 }
