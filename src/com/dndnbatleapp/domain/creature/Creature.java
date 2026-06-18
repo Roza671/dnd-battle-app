@@ -11,10 +11,10 @@ public class Creature {
   private int armorClass;
   private final CreatureStats stats;
 
-  public Creature(String name, int maxHp, int currentHp, int armorClass, CreatureStats stats) {
+  public Creature(String name, int maxHp, int armorClass, CreatureStats stats) {
     this.name = name;
     this.maxHp = maxHp;
-    this.currentHp = currentHp;
+    this.currentHp = maxHp;
     this.armorClass = armorClass;
     this.stats = stats;
   }
