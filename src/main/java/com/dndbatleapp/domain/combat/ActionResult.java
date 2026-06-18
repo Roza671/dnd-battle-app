@@ -3,7 +3,7 @@ package com.dndbatleapp.domain.combat;
 import com.dndbatleapp.domain.creature.Creature;
 
 public sealed interface ActionResult permits ActionResult.AttackHit, ActionResult.AttackMiss, ActionResult.Defended, ActionResult.Healed, ActionResult.Skipped, ActionResult.SpellCast, ActionResult.SpellMiss {
-  record SpellMiss(Creature attacker, Creature target) implements ActionResult {
+  record SpellMiss(Creature caster, Creature target) implements ActionResult {
   }
 
   record SpellCast(Creature caster, Creature target, int damage, boolean isCritical) implements ActionResult {
@@ -21,6 +21,6 @@ public sealed interface ActionResult permits ActionResult.AttackHit, ActionResul
   record AttackMiss(Creature attacker, Creature target) implements ActionResult {
   }
 
-  record AttackHit(Creature attacker, Creature target, int damage, boolean critical) implements ActionResult {
+  record AttackHit(Creature attacker, Creature target, int damage, boolean isCritical) implements ActionResult {
   }
 }

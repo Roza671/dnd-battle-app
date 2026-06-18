@@ -39,6 +39,11 @@ public class Creature {
     return List.copyOf(effects);
   }
 
+  public boolean isStunned() {
+    return effects.stream()
+        .anyMatch(effect -> effect.type() == EffectType.STUNNED);
+  }
+
   public void tickEffects() {
     List<Effect> updated = effects.stream()
         .map(effect -> {

@@ -48,7 +48,7 @@ class ActionResolverTest {
 
     assertInstanceOf(ActionResult.AttackHit.class, result);
     var hit = (ActionResult.AttackHit) result;
-    assertTrue(hit.critical(), "натуральная 20 должна быть критом");
+    assertTrue(hit.isCritical(), "натуральная 20 должна быть критом");
   }
 
   @Test
@@ -80,7 +80,7 @@ class ActionResolverTest {
 
     assertInstanceOf(ActionResult.AttackHit.class, result);
     var hit = (ActionResult.AttackHit) result;
-    assertFalse(hit.critical());
+    assertFalse(hit.isCritical());
     assertEquals(2, hit.damage());
   }
 
