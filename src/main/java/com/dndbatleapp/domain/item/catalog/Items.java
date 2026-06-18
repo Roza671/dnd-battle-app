@@ -7,8 +7,8 @@ import com.dndbatleapp.domain.item.PotionEffect;
 
 public final class Items {
 
-  private Items() {
-  }
+    private Items() {
+    }
 
   public static Item.Weapon shortSword() {
     return new Item.Weapon("short_sword", "Short Sword",
