@@ -53,7 +53,7 @@ public class Creature {
 
           return effect.tickedDown();
         })
-        .filter(Effect::expired)
+        .filter(effect -> !effect.expired())
         .toList();
 
     effects.clear();

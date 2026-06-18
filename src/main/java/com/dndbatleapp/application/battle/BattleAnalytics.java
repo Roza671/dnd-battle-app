@@ -28,14 +28,11 @@ public class BattleAnalytics {
 
   public Map<Creature, Integer> damageByCreature(List<ActionResult> actions) {
     return actions.stream()
+        .filter(action -> action instanceof ActionResult.AttackHit || action instanceof ActionResult.SpellCast)
         .collect(groupingBy(action -> switch (action) {
           case ActionResult.AttackHit attackHit -> attackHit.attacker();
-          case ActionResult.AttackMiss attackMiss -> attackMiss.attacker();
-          case ActionResult.Defended defended -> defended.self();
-          case ActionResult.Healed healed -> healed.healer();
-          case ActionResult.Skipped skipped -> skipped.self();
           case ActionResult.SpellCast spellCast -> spellCast.caster();
-          case ActionResult.SpellMiss spellMiss -> spellMiss.caster();
+          default -> throw new IllegalStateException("Unexpected value: " + action);
 
         }, summingInt(action -> switch (action) {
           case ActionResult.AttackHit attackHit -> attackHit.damage();

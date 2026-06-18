@@ -12,8 +12,8 @@ public class ConsoleBattleReporter {
   }
 
   public void report(BattleOutcome outcome) {
-    outcome.log().forEach(r -> System.out.println(formatter.describe(r)));
     System.out.println("============== ROUND LOG ==============");
+    outcome.log().forEach(r -> System.out.println(formatter.describe(r)));
 
     System.out.println("Winner: " + outcome.winner() + " in " + outcome.rounds() + " rounds");
   }
@@ -22,8 +22,8 @@ public class ConsoleBattleReporter {
     System.out.println("============== ROUND STATISTICS ==============");
 
     System.out.println("Average actions per round: " + stats.averageActionsPerRound());
-    System.out.println("Total critical damage: " + stats.criticalCount());
-    System.out.println("Total missed hits: " + stats.missCount());
+    System.out.println("Total critical count: " + stats.criticalCount());
+    System.out.println("Total missing count: " + stats.missCount());
 
     System.out.println("============== DAMAGE STATISTIC ==============");
 
