@@ -1,9 +1,7 @@
-package com.dndbattleapp;
+package com.dndbattleapp.creature;
 
 import com.dndbatleapp.adapter.in.content.Creatures;
 import org.junit.jupiter.api.Test;
-
-import javax.management.StringValueExp;
 
 import static org.junit.jupiter.api.Assertions.*;
 

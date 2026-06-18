@@ -1,4 +1,4 @@
-package com.dndbattleapp;
+package com.dndbattleapp.creature;
 
 import com.dndbatleapp.domain.attribute.Attribute;
 import com.dndbatleapp.domain.creature.CreatureStats;
