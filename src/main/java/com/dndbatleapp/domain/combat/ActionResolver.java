@@ -14,9 +14,8 @@ public class ActionResolver {
       case Attack(var attacker, var target) -> resolveAttack(attacker, target, roller);
       case Heal(var healer, var target, var pool) -> resolveHeal(healer, target, pool, roller);
       case CastDamageSpell c -> resolveSpell(c, roller);
-//      case Defend(var self) -> { self.addEffect(...); yield new Defended(self); }
+      case Defend(var self) -> resolveDefend(self);
       case Skip(var self) -> new Skipped(self);
-      default -> throw new IllegalStateException("Unexpected value: " + action);
     };
   }
 
